@@ -1,2 +1,3 @@
 # DoDTranslationTool
-Translation Tool for Darkest of Days
+Darkest of Days Translation Tool
+
