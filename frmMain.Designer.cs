@@ -37,6 +37,8 @@
 			this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.btnTranslationIdAdd = new System.Windows.Forms.Button();
+			this.btnTranslationIdDel = new System.Windows.Forms.Button();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -44,9 +46,9 @@
 			// 
 			this.translationIDList.FormattingEnabled = true;
 			this.translationIDList.ItemHeight = 12;
-			this.translationIDList.Location = new System.Drawing.Point(13, 37);
+			this.translationIDList.Location = new System.Drawing.Point(12, 63);
 			this.translationIDList.Name = "translationIDList";
-			this.translationIDList.Size = new System.Drawing.Size(188, 520);
+			this.translationIDList.Size = new System.Drawing.Size(188, 496);
 			this.translationIDList.TabIndex = 0;
 			this.translationIDList.SelectedIndexChanged += new System.EventHandler(this.translationIDList_SelectedIndexChanged);
 			// 
@@ -124,11 +126,34 @@
 			this.mnuSaveAll.Text = "Save All";
 			this.mnuSaveAll.Click += new System.EventHandler(this.mnuSaveAll_Click);
 			// 
+			// btnTranslationIdAdd
+			// 
+			this.btnTranslationIdAdd.Location = new System.Drawing.Point(12, 37);
+			this.btnTranslationIdAdd.Name = "btnTranslationIdAdd";
+			this.btnTranslationIdAdd.Size = new System.Drawing.Size(27, 20);
+			this.btnTranslationIdAdd.TabIndex = 6;
+			this.btnTranslationIdAdd.Text = "+";
+			this.btnTranslationIdAdd.UseVisualStyleBackColor = true;
+			this.btnTranslationIdAdd.Click += new System.EventHandler(this.btnTranslationIdAdd_Click);
+			// 
+			// btnTranslationIdDel
+			// 
+			this.btnTranslationIdDel.Enabled = false;
+			this.btnTranslationIdDel.Location = new System.Drawing.Point(45, 37);
+			this.btnTranslationIdDel.Name = "btnTranslationIdDel";
+			this.btnTranslationIdDel.Size = new System.Drawing.Size(27, 21);
+			this.btnTranslationIdDel.TabIndex = 7;
+			this.btnTranslationIdDel.Text = "-";
+			this.btnTranslationIdDel.UseVisualStyleBackColor = true;
+			this.btnTranslationIdDel.Click += new System.EventHandler(this.btnTranslationIdDel_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(813, 571);
+			this.Controls.Add(this.btnTranslationIdDel);
+			this.Controls.Add(this.btnTranslationIdAdd);
 			this.Controls.Add(this.txtTranslation);
 			this.Controls.Add(this.cmbLanguages);
 			this.Controls.Add(this.label1);
@@ -158,6 +183,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuOpen;
         private System.Windows.Forms.ToolStripMenuItem mnuSave;
 		private System.Windows.Forms.ToolStripMenuItem mnuSaveAll;
+		private System.Windows.Forms.Button btnTranslationIdAdd;
+		private System.Windows.Forms.Button btnTranslationIdDel;
 	}
 }
 

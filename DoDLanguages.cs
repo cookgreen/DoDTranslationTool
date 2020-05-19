@@ -7,10 +7,16 @@ namespace DoDTranslationTool
 {
 	public class DoDLanguages
 	{
+		private CSV languageCSVObject;
 		private Dictionary<string, List<string>> dic;
+		public int LanguageNum
+		{
+			get { return languageCSVObject.ColNum - 1; }
+		}
 		public DoDLanguages(CSV languageCSVObject)
 		{
 			dic = new Dictionary<string, List<string>>();
+			this.languageCSVObject = languageCSVObject;
 			Process(languageCSVObject);
 		}
 
@@ -87,6 +93,24 @@ namespace DoDTranslationTool
 			}
 
 			return newCSV;
+		}
+
+		public void AddTranslationID(string value)
+		{
+			List<string> values = new List<string>();
+			for (int i = 0; i < LanguageNum; i++)
+			{
+				values.Add(string.Empty);
+			}
+			dic.Add(value, values);
+		}
+
+		public void DeleteTranslationID(string value)
+		{
+			if(dic.ContainsKey(value))
+			{
+				dic.Remove(value);
+			}
 		}
 	}
 }

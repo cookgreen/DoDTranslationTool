@@ -8,8 +8,25 @@ namespace DoDTranslationTool
 {
 	public class CSV
 	{
+		private int colNum;
+		private int rowNum;
 		private List<List<string>> data;
 		private string filePath;
+
+		public List<List<string>> Data
+		{
+			get { return data; }
+		}
+
+		public int ColNum
+		{
+			get { return colNum; }
+		}
+
+		public int RowNum
+		{
+			get { return rowNum; }
+		}
 
 		public CSV()
 		{
@@ -20,12 +37,9 @@ namespace DoDTranslationTool
 		{
 			data = new List<List<string>>();
 			this.filePath = filePath;
+			rowNum = -1;
+			colNum = -1;
 			Read();
-		}
-
-		public List<List<string>> Data 
-		{
-			get { return data; } 
 		}
 
 		private void Read(string filePath)
@@ -42,13 +56,25 @@ namespace DoDTranslationTool
 				{
 					string line = reader.ReadLine();
 					string[] tokens = line.Split(',');
+					if (colNum == -1)
+					{
+						colNum = tokens.Length;
+					}
 					List<string> temp = new List<string>();
 					foreach (var token in tokens)
 					{
-						temp.Add(token.Trim().Substring(1, token.Trim().Length - 2));
+						if (!string.IsNullOrEmpty(token))
+						{
+							temp.Add(token.Trim().Substring(1, token.Trim().Length - 2));
+						}
+						else
+						{
+							temp.Add(string.Empty);
+						}
 					}
 					data.Add(temp);
 				}
+				rowNum = data.Count;
 			}
 		}
 
@@ -62,13 +88,27 @@ namespace DoDTranslationTool
 					for (int i = 0; i < temp.Count; i++)
 					{
 						string d = temp[i];
-						if (i != temp.Count - 1)
+						if (string.IsNullOrEmpty(d))
 						{
-							line += "\"" + d + "\"" + ",";
+							if (i != temp.Count - 1)
+							{
+								line += ",";
+							}
+							else
+							{
+								line += string.Empty;
+							}
 						}
 						else
 						{
-							line += "\"" + d + "\"";
+							if (i != temp.Count - 1)
+							{
+								line += "\"" + d + "\"" + ",";
+							}
+							else
+							{
+								line += "\"" + d + "\"";
+							}
 						}
 					}
 					writer.WriteLine(line);

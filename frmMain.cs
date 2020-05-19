@@ -14,8 +14,6 @@ namespace DoDTranslationTool
         private string languageCSVFilePath;
         private DoDLanguages dodLanguages;
         private Stack<Tuple<string, int, string>> changes;
-        private int lastSelectedTranslationIDIndex;
-        private bool isFirstlyTranslationIDSelected = true;
         private bool isFirstlyLanguageSelected = true;
 
 
@@ -42,7 +40,7 @@ namespace DoDTranslationTool
         {
             dodLanguages = new DoDLanguages(new CSV(languageCSVFilePath));
             List<string> ids = dodLanguages.GetAllStrID();
-            int num = dodLanguages.GetLanguageNumber();
+            int num = dodLanguages.LanguageNum;
             translationIDList.Items.Clear();
             cmbLanguages.Items.Clear();
             foreach (var id in ids)
@@ -67,6 +65,10 @@ namespace DoDTranslationTool
         {
             if (translationIDList.SelectedIndex != -1 && cmbLanguages.SelectedIndex != -1)
             {
+                if (translationIDList.SelectedIndex != -1)
+                {
+                    btnTranslationIdDel.Enabled = true;
+                }
                 var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
                         translationIDList.SelectedItem.ToString(),
                         cmbLanguages.SelectedIndex
@@ -146,6 +148,31 @@ namespace DoDTranslationTool
                 {
                     mnuSaveAll_Click(sender, new EventArgs());
                 }
+            }
+        }
+
+        private void btnTranslationIdAdd_Click(object sender, EventArgs e)
+        {
+            frmValueInput valueInputWin = new frmValueInput();
+            if (valueInputWin.ShowDialog() == DialogResult.OK)
+            {
+                dodLanguages.AddTranslationID(valueInputWin.Value);
+                int idx = translationIDList.Items.Add(valueInputWin.Value);
+                translationIDList.SelectedIndex = idx;
+            }
+        }
+
+        private void btnTranslationIdDel_Click(object sender, EventArgs e)
+        {
+            if (translationIDList.SelectedIndex == -1)
+            {
+                return;
+            }
+            if (MessageBox.Show("Are you sure to delete this ID?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dodLanguages.DeleteTranslationID(translationIDList.SelectedItem.ToString());
+                txtTranslation.Text = null;
+                translationIDList.SelectedIndex = -1;
             }
         }
     }
