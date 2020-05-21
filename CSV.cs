@@ -65,7 +65,16 @@ namespace DoDTranslationTool
 					{
 						if (!string.IsNullOrEmpty(token))
 						{
-							temp.Add(token.Trim().Substring(1, token.Trim().Length - 2));
+                            int length = token.Trim().Length - 2;
+                            if (length > 0)
+                            {
+                                string afterExtractedStr = token.Trim().Substring(1, length);
+                                temp.Add(afterExtractedStr);
+                            }
+                            else
+                            {
+                                temp.Add(string.Empty);
+                            }
 						}
 						else
 						{

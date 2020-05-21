@@ -33,6 +33,7 @@ namespace DoDTranslationTool
                 ReadLanguageCSV();
                 mnuSave.Enabled = true;
                 mnuSaveAll.Enabled = true;
+                btnTranslationIdAdd.Enabled = true;
             }
         }
 
