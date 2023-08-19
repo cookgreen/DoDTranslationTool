@@ -9,10 +9,12 @@ using System.Windows.Forms;
 
 namespace DoDTranslationTool
 {
-	public partial class frmValueInput : Form
+	public partial class frmNewTranslation : Form
 	{
-		public string Value { get { return textBox1.Text; } }
-		public frmValueInput()
+		public string ID { get { return txtID.Text; } }
+		public string TranslationText { get { return txtTranslation.Text; } }
+
+		public frmNewTranslation()
 		{
 			InitializeComponent();
 		}

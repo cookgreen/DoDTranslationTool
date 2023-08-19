@@ -136,7 +136,7 @@ namespace DoDTranslationTool
                     change.Item3
                 );
             }
-            dodLanguages.ToCSV().Save(languageCSVFilePath);
+            dodLanguages.SaveToCSV().Save(languageCSVFilePath);
             MessageBox.Show("Save File Successfully!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -154,12 +154,13 @@ namespace DoDTranslationTool
 
         private void btnTranslationIdAdd_Click(object sender, EventArgs e)
         {
-            frmValueInput valueInputWin = new frmValueInput();
-            if (valueInputWin.ShowDialog() == DialogResult.OK)
+            frmNewTranslation createNewTranslationWin = new frmNewTranslation();
+            if (createNewTranslationWin.ShowDialog() == DialogResult.OK)
             {
-                dodLanguages.AddTranslationID(valueInputWin.Value);
-                int idx = translationIDList.Items.Add(valueInputWin.Value);
+                dodLanguages.AddTranslationID(createNewTranslationWin.ID);
+                int idx = translationIDList.Items.Add(createNewTranslationWin.ID);
                 translationIDList.SelectedIndex = idx;
+                txtTranslation.Text = createNewTranslationWin.ID;
             }
         }
 
@@ -176,5 +177,10 @@ namespace DoDTranslationTool
                 translationIDList.SelectedIndex = -1;
             }
         }
-    }
+
+		private void btnSave_Click(object sender, EventArgs e)
+		{
+
+		}
+	}
 }
