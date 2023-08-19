@@ -50,6 +50,9 @@
     <Compile Include="CSV.cs" />
     <Compile Include="DoDLanguage.cs" />
     <Compile Include="DoDLanguages.cs" />
+    <Compile Include="DoDEditorChangeApplier.cs" />
+    <Compile Include="EditorChange.cs" />
+    <Compile Include="EditorChanges.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>

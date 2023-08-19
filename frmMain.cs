@@ -13,14 +13,13 @@ namespace DoDTranslationTool
     {
         private string languageCSVFilePath;
         private DoDLanguages dodLanguages;
-        private Stack<Tuple<string, int, string>> changes;
-        private bool isFirstlyLanguageSelected = true;
+        private EditorChanges editorChanges;
 
 
         public frmMain()
         {
             InitializeComponent();
-            changes = new Stack<Tuple<string, int, string>>();
+            editorChanges = new EditorChanges();
         }
 
         private void MnuOpen_Click(object sender, EventArgs e)
@@ -64,25 +63,46 @@ namespace DoDTranslationTool
 
         private void translationIDList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(translationIDList.SelectedIndex == -1)
+            {
+                btnTranslationIdDel.Enabled = false;
+            }
+            else
+            {
+                btnTranslationIdDel.Enabled = true;
+            }
+
             if (translationIDList.SelectedIndex != -1 && cmbLanguages.SelectedIndex != -1)
             {
-                if (translationIDList.SelectedIndex != -1)
+                if (translationIDList.SelectedIndex != 0)
                 {
-                    btnTranslationIdDel.Enabled = true;
-                }
-                var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
-                        translationIDList.SelectedItem.ToString(),
-                        cmbLanguages.SelectedIndex
-                    );
-                if (cachedTranslationText != txtTranslation.Text)
-                {
-                    changes.Push(new Tuple<string, int, string>(
-                        translationIDList.SelectedItem.ToString(),
-                        cmbLanguages.SelectedIndex,
-                        txtTranslation.Text)
-                    );
-                }
-                txtTranslation.Text = cachedTranslationText;
+                    //Check last translation
+                    int lastIndex = translationIDList.SelectedIndex - 1;
+                    string lastSelectedID = translationIDList.Items[lastIndex].ToString();
+					var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+							lastSelectedID,
+							cmbLanguages.SelectedIndex
+						);
+					if (cachedTranslationText != txtTranslation.Text) //Modified
+					{
+                        EditorChange editorChange = new EditorChange();
+                        editorChange.ChangeType = EditorChangeType.Modify;
+                        editorChange.ChangeDataList.Add(new EditorChangeData()
+                        {
+                            DataAfterChange = new Tuple<string, int, string>(
+                                translationIDList.SelectedItem.ToString(),
+                                cmbLanguages.SelectedIndex,
+                                txtTranslation.Text)
+                        });
+                        editorChanges.EditorChangeList.Add(editorChange);
+					}
+
+					cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+							translationIDList.SelectedItem.ToString(),
+							cmbLanguages.SelectedIndex
+						);
+                    txtTranslation.Text = cachedTranslationText;
+				}
             }
         }
 
@@ -94,21 +114,6 @@ namespace DoDTranslationTool
                         translationIDList.SelectedItem.ToString(),
                         cmbLanguages.SelectedIndex
                     );
-                if (isFirstlyLanguageSelected)
-                {
-                    isFirstlyLanguageSelected = false;
-                }
-                else
-                {
-                    if (cachedTranslationText != txtTranslation.Text)
-                    {
-                        changes.Push(new Tuple<string, int, string>(
-                            translationIDList.SelectedItem.ToString(),
-                            cmbLanguages.SelectedIndex,
-                            txtTranslation.Text)
-                        );
-                    }
-                }
                 txtTranslation.Text = cachedTranslationText;
             }
         }
@@ -116,39 +121,37 @@ namespace DoDTranslationTool
         private void MnuSave_Click(object sender, EventArgs e)
         {
             if (translationIDList.SelectedIndex != -1 && cmbLanguages.SelectedIndex != -1)
-            {
-                changes.Push(new Tuple<string, int, string>(
-                    translationIDList.SelectedItem.ToString(),
-                    cmbLanguages.SelectedIndex,
-                    txtTranslation.Text)
-                );
-            }
+			{
+				EditorChange editorChange = new EditorChange();
+				editorChange.ChangeType = EditorChangeType.Modify;
+				editorChange.ChangeDataList.Add(new EditorChangeData()
+				{
+					DataAfterChange = new Tuple<string, int, string>(
+						translationIDList.SelectedItem.ToString(),
+						cmbLanguages.SelectedIndex,
+						txtTranslation.Text)
+				});
+				editorChanges.EditorChangeList.Add(editorChange);
+
+				mnuSave.Enabled = false;
+			}
         }
 
         private void mnuSaveAll_Click(object sender, EventArgs e)
         {
-            while (changes.Count > 0)
-            {
-                var change = changes.Pop();
-                dodLanguages.SetLocalizedLanguageStr(
-                    change.Item1,
-                    change.Item2,
-                    change.Item3
-                );
-            }
-            dodLanguages.SaveToCSV().Save(languageCSVFilePath);
+            DoDEditorChangeApplier applier = new 
+                DoDEditorChangeApplier(editorChanges.EditorChangeList, dodLanguages);
+            applier.ApplyChanges();
+
+			dodLanguages.SaveToCSV().Save(languageCSVFilePath);
             MessageBox.Show("Save File Successfully!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void frmMain_FormClosed(object sender, FormClosingEventArgs e)
         {
-            if (changes.Count > 0)
+            if (editorChanges.EditorChangeList.Count > 0)
             {
-                if (MessageBox.Show("There are unsaved changes, do you want to save them?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                    == DialogResult.Yes)
-                {
-                    mnuSaveAll_Click(sender, new EventArgs());
-                }
+                mnuSaveAll_Click(sender, e);
             }
         }
 
@@ -157,7 +160,18 @@ namespace DoDTranslationTool
             frmNewTranslation createNewTranslationWin = new frmNewTranslation();
             if (createNewTranslationWin.ShowDialog() == DialogResult.OK)
             {
-                dodLanguages.AddTranslationID(createNewTranslationWin.ID);
+                EditorChange editorChange = new EditorChange();
+                editorChange.ChangeType = EditorChangeType.Add;
+                editorChange.ChangeDataList.Add(new EditorChangeData()
+                {
+                    DataObject = "obj_DoDLanguage",
+                    DataBeforeChange = null,
+                    DataAfterChange = new Tuple<string, string>(
+                        createNewTranslationWin.ID,
+                        createNewTranslationWin.TranslationText)
+                });
+                editorChanges.EditorChangeList.Add(editorChange);
+
                 int idx = translationIDList.Items.Add(createNewTranslationWin.ID);
                 translationIDList.SelectedIndex = idx;
                 txtTranslation.Text = createNewTranslationWin.ID;
@@ -172,7 +186,16 @@ namespace DoDTranslationTool
             }
             if (MessageBox.Show("Are you sure to delete this ID?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                dodLanguages.DeleteTranslationID(translationIDList.SelectedItem.ToString());
+                EditorChange editorChange = new EditorChange();
+                editorChange.ChangeType = EditorChangeType.Delete;
+                editorChange.ChangeDataList.Add(new EditorChangeData()
+                {
+                    DataObject = "obj_DoDLanguage",
+                    DataBeforeChange = translationIDList.SelectedItem.ToString(),
+                    DataAfterChange = null
+				});
+                editorChanges.EditorChangeList.Add(editorChange);
+
                 txtTranslation.Text = null;
                 translationIDList.SelectedIndex = -1;
             }
@@ -180,7 +203,29 @@ namespace DoDTranslationTool
 
 		private void btnSave_Click(object sender, EventArgs e)
 		{
+            MnuSave_Click(sender, e);
+            btnSave.Enabled = false;
+		}
 
+		private void txtTranslation_TextChanged(object sender, EventArgs e)
+		{
+			var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+					translationIDList.SelectedItem.ToString(),
+					cmbLanguages.SelectedIndex
+				);
+            if(cachedTranslationText != txtTranslation.Text && editorChanges.FindChange
+                (EditorChangeType.Modify, new Tuple<string, int, string>(
+                    translationIDList.SelectedItem.ToString(),
+					cmbLanguages.SelectedIndex, txtTranslation.Text)))
+			{
+				mnuSave.Enabled = true;
+				btnSave.Enabled = true;
+            }
+            else
+			{
+				mnuSave.Enabled = true;
+				btnSave.Enabled = false;
+            }
 		}
 	}
 }

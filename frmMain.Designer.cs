@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
 			this.translationIDList = new System.Windows.Forms.ListBox();
-			this.label1 = new System.Windows.Forms.Label();
+			this.lbLanguage = new System.Windows.Forms.Label();
 			this.cmbLanguages = new System.Windows.Forms.ComboBox();
 			this.txtTranslation = new System.Windows.Forms.RichTextBox();
-			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.main_menu = new System.Windows.Forms.MenuStrip();
+			this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSave = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnTranslationIdAdd = new System.Windows.Forms.Button();
 			this.btnTranslationIdDel = new System.Windows.Forms.Button();
 			this.btnSave = new System.Windows.Forms.Button();
-			this.menuStrip1.SuspendLayout();
+			this.main_menu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// translationIDList
@@ -48,28 +48,28 @@
 			this.translationIDList.FormattingEnabled = true;
 			this.translationIDList.ItemHeight = 15;
 			this.translationIDList.Location = new System.Drawing.Point(16, 79);
-			this.translationIDList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.translationIDList.Margin = new System.Windows.Forms.Padding(4);
 			this.translationIDList.Name = "translationIDList";
 			this.translationIDList.Size = new System.Drawing.Size(249, 619);
 			this.translationIDList.TabIndex = 0;
 			this.translationIDList.SelectedIndexChanged += new System.EventHandler(this.translationIDList_SelectedIndexChanged);
 			// 
-			// label1
+			// lbLanguage
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(281, 50);
-			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(79, 15);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Language:";
+			this.lbLanguage.AutoSize = true;
+			this.lbLanguage.Location = new System.Drawing.Point(281, 50);
+			this.lbLanguage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.lbLanguage.Name = "lbLanguage";
+			this.lbLanguage.Size = new System.Drawing.Size(79, 15);
+			this.lbLanguage.TabIndex = 1;
+			this.lbLanguage.Text = "Language:";
 			// 
 			// cmbLanguages
 			// 
 			this.cmbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbLanguages.FormattingEnabled = true;
 			this.cmbLanguages.Location = new System.Drawing.Point(368, 46);
-			this.cmbLanguages.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.cmbLanguages.Margin = new System.Windows.Forms.Padding(4);
 			this.cmbLanguages.Name = "cmbLanguages";
 			this.cmbLanguages.Size = new System.Drawing.Size(193, 23);
 			this.cmbLanguages.TabIndex = 2;
@@ -78,32 +78,33 @@
 			// txtTranslation
 			// 
 			this.txtTranslation.Location = new System.Drawing.Point(276, 79);
-			this.txtTranslation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.txtTranslation.Margin = new System.Windows.Forms.Padding(4);
 			this.txtTranslation.Name = "txtTranslation";
 			this.txtTranslation.Size = new System.Drawing.Size(791, 548);
 			this.txtTranslation.TabIndex = 3;
 			this.txtTranslation.Text = "";
+			this.txtTranslation.TextChanged += new System.EventHandler(this.txtTranslation_TextChanged);
 			// 
-			// menuStrip1
+			// main_menu
 			// 
-			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(1084, 28);
-			this.menuStrip1.TabIndex = 5;
-			this.menuStrip1.Text = "menuStrip1";
+			this.main_menu.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.main_menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFile});
+			this.main_menu.Location = new System.Drawing.Point(0, 0);
+			this.main_menu.Name = "main_menu";
+			this.main_menu.Size = new System.Drawing.Size(1084, 28);
+			this.main_menu.TabIndex = 5;
+			this.main_menu.Text = "menuStrip1";
 			// 
-			// fileToolStripMenuItem
+			// mnuFile
 			// 
-			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuOpen,
             this.mnuSave,
             this.mnuSaveAll});
-			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(48, 24);
-			this.fileToolStripMenuItem.Text = "File";
+			this.mnuFile.Name = "mnuFile";
+			this.mnuFile.Size = new System.Drawing.Size(48, 24);
+			this.mnuFile.Text = "File";
 			// 
 			// mnuOpen
 			// 
@@ -136,7 +137,7 @@
 			// 
 			this.btnTranslationIdAdd.Enabled = false;
 			this.btnTranslationIdAdd.Location = new System.Drawing.Point(16, 46);
-			this.btnTranslationIdAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnTranslationIdAdd.Margin = new System.Windows.Forms.Padding(4);
 			this.btnTranslationIdAdd.Name = "btnTranslationIdAdd";
 			this.btnTranslationIdAdd.Size = new System.Drawing.Size(36, 25);
 			this.btnTranslationIdAdd.TabIndex = 6;
@@ -148,7 +149,7 @@
 			// 
 			this.btnTranslationIdDel.Enabled = false;
 			this.btnTranslationIdDel.Location = new System.Drawing.Point(60, 46);
-			this.btnTranslationIdDel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.btnTranslationIdDel.Margin = new System.Windows.Forms.Padding(4);
 			this.btnTranslationIdDel.Name = "btnTranslationIdDel";
 			this.btnTranslationIdDel.Size = new System.Drawing.Size(36, 26);
 			this.btnTranslationIdDel.TabIndex = 7;
@@ -158,6 +159,7 @@
 			// 
 			// btnSave
 			// 
+			this.btnSave.Enabled = false;
 			this.btnSave.Location = new System.Drawing.Point(937, 634);
 			this.btnSave.Name = "btnSave";
 			this.btnSave.Size = new System.Drawing.Size(130, 64);
@@ -176,18 +178,18 @@
 			this.Controls.Add(this.btnTranslationIdAdd);
 			this.Controls.Add(this.txtTranslation);
 			this.Controls.Add(this.cmbLanguages);
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.lbLanguage);
 			this.Controls.Add(this.translationIDList);
-			this.Controls.Add(this.menuStrip1);
-			this.MainMenuStrip = this.menuStrip1;
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Controls.Add(this.main_menu);
+			this.MainMenuStrip = this.main_menu;
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "frmMain";
 			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Darkest of Days Translation Tool";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosed);
-			this.menuStrip1.ResumeLayout(false);
-			this.menuStrip1.PerformLayout();
+			this.main_menu.ResumeLayout(false);
+			this.main_menu.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -196,11 +198,11 @@
         #endregion
 
         private System.Windows.Forms.ListBox translationIDList;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbLanguage;
         private System.Windows.Forms.ComboBox cmbLanguages;
         private System.Windows.Forms.RichTextBox txtTranslation;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip main_menu;
+        private System.Windows.Forms.ToolStripMenuItem mnuFile;
         private System.Windows.Forms.ToolStripMenuItem mnuOpen;
         private System.Windows.Forms.ToolStripMenuItem mnuSave;
 		private System.Windows.Forms.ToolStripMenuItem mnuSaveAll;
