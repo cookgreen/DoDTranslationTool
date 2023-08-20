@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.translationIDList = new System.Windows.Forms.ListBox();
 			this.lbLanguage = new System.Windows.Forms.Label();
 			this.cmbLanguages = new System.Windows.Forms.ComboBox();
@@ -67,6 +68,7 @@
 			// cmbLanguages
 			// 
 			this.cmbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbLanguages.Enabled = false;
 			this.cmbLanguages.FormattingEnabled = true;
 			this.cmbLanguages.Location = new System.Drawing.Point(368, 46);
 			this.cmbLanguages.Margin = new System.Windows.Forms.Padding(4);
@@ -77,6 +79,7 @@
 			// 
 			// txtTranslation
 			// 
+			this.txtTranslation.Enabled = false;
 			this.txtTranslation.Location = new System.Drawing.Point(276, 79);
 			this.txtTranslation.Margin = new System.Windows.Forms.Padding(4);
 			this.txtTranslation.Name = "txtTranslation";
@@ -181,10 +184,10 @@
 			this.Controls.Add(this.lbLanguage);
 			this.Controls.Add(this.translationIDList);
 			this.Controls.Add(this.main_menu);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.main_menu;
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "frmMain";
-			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Darkest of Days Translation Tool";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosed);

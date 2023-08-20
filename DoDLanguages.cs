@@ -7,96 +7,94 @@ namespace DoDTranslationTool
 {
 	public class DoDLanguages
 	{
-		private CSV languageCSVObject;
-		private List<DoDLanguage> dic;
+		private List<DoDLanguage> languages;
 
 		public int LanguageNum
 		{
-			get { return languageCSVObject.ColNum - 1; }
+			get { return languages.Count; }
 		}
 
-		public DoDLanguages(CSV languageCSVObject)
+		public DoDLanguages(CSV languageCSVFile)
 		{
-			dic = new List<DoDLanguage>();
-			this.languageCSVObject = languageCSVObject;
-			readCSVLanguangeData(languageCSVObject);
+			languages = new List<DoDLanguage>();
+			readCSVLanguangeData(languageCSVFile);
 		}
 
-		public string GetLocalizedLanguage(string strID, int langIndex)
+		public string GetTranslatedLanguage(string id, int langIndex)
 		{
-			return dic[langIndex].GetTranslationByID(strID);
+			return languages[langIndex].GetTranslationByID(id);
 		}
 
-		public void SetLocalizedLanguageStr(string strID, int langIndex, string localizedStr)
+		public void SetTranslationLanguage(string id, int langIndex, string translationText)
 		{
-			dic[langIndex].ModifyTranslation(strID, localizedStr);
+			languages[langIndex].ModifyTranslation(id, translationText);
 		}
 
-		public List<string> GetAllStrID()
+		public List<string> GetAllTranslationID()
 		{
-			return dic[0].GetTranslationIDList();
+			return languages[0].GetTranslationIDList();
 		}
 
 		public int GetLanguageNumber()
 		{
-			return dic.Count;
-		}
-
-		public void AddTranslationID(string value)
-		{
-			for (int i = 0; i < dic.Count; i++)
-			{
-				dic[i].AddNewTranslation(value, string.Empty);
-			}
+			return languages.Count;
 		}
 
 		public void AddNewTranslation(string id, string transText)
 		{
-			for (int i = 0; i < dic.Count; i++)
+			for (int i = 0; i < languages.Count; i++)
 			{
-				dic[i].AddNewTranslation(id, transText);
+				languages[i].AddNewTranslation(id, transText);
+			}
+		}
+
+		public void AddTranslationID(string id)
+		{
+			for (int i = 0; i < languages.Count; i++)
+			{
+				languages[i].AddNewTranslation(id, string.Empty);
 			}
 		}
 
 		public void DeleteTranslationID(string id)
 		{
-			for (int i = 0; i < dic.Count; i++)
+			for (int i = 0; i < languages.Count; i++)
 			{
-				dic[i].DeleteTranslationByID(id);
+				languages[i].DeleteTranslationByID(id);
 			}
 		}
 
-		private void readCSVLanguangeData(CSV csvObject)
+		public CSV SaveToCSV()
 		{
-			foreach (var data in csvObject.Data)
+			CSV savedCSV = new CSV();
+			List<string> temp = new List<string>();
+			var keys = languages[0].GetTranslationIDList();
+
+			foreach(string key in keys)
+			{
+				temp.Add(key);
+
+				foreach (var lang in languages)
+				{
+					temp.Add(lang.GetTranslationByID(key));
+				}
+			}
+			
+			savedCSV.Data.Add(temp);
+			return savedCSV;
+		}
+
+		private void readCSVLanguangeData(CSV csvFile)
+		{
+			foreach (var data in csvFile.Data)
 			{
 				DoDLanguage language = new DoDLanguage();
 				for (int i = 1; i < data.Count; i++)
 				{
 					language.AddNewTranslation(data[0], data[i]);
 				}
-				dic.Add(language);
+				languages.Add(language);
 			}
-		}
-
-		public CSV SaveToCSV()
-		{
-			CSV newCSV = new CSV();
-			List<string> temp = new List<string>();
-			var keys = dic[0].GetTranslationIDList();
-
-			foreach(string key in keys)
-			{
-				temp.Add(key);
-
-				foreach (var lang in dic)
-				{
-					temp.Add(lang.GetTranslationByID(key));
-				}
-			}
-			
-			newCSV.Data.Add(temp);
-			return newCSV;
 		}
 	}
 }

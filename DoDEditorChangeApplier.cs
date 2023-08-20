@@ -49,7 +49,7 @@ namespace DoDTranslationTool
 		{
 			EditorChangeData data = change.ChangeDataList[0];
 			Tuple<string, int, string> modifiedData = data.DataAfterChange as Tuple<string, int, string>;
-			dodLanguages.SetLocalizedLanguageStr(modifiedData.Item1, modifiedData.Item2, modifiedData.Item3);
+			dodLanguages.SetTranslationLanguage(modifiedData.Item1, modifiedData.Item2, modifiedData.Item3);
 		}
 
 		private void applyChangeDelete(EditorChange change)

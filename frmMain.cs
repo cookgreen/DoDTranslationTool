@@ -15,7 +15,6 @@ namespace DoDTranslationTool
         private DoDLanguages dodLanguages;
         private EditorChanges editorChanges;
 
-
         public frmMain()
         {
             InitializeComponent();
@@ -29,17 +28,21 @@ namespace DoDTranslationTool
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 languageCSVFilePath = dialog.FileName;
+
                 ReadLanguageCSV();
+
                 mnuSave.Enabled = true;
                 mnuSaveAll.Enabled = true;
                 btnTranslationIdAdd.Enabled = true;
+                cmbLanguages.Enabled = true;
+                txtTranslation.Enabled = true;
             }
         }
 
         private void ReadLanguageCSV()
         {
             dodLanguages = new DoDLanguages(new CSV(languageCSVFilePath));
-            List<string> ids = dodLanguages.GetAllStrID();
+            List<string> ids = dodLanguages.GetAllTranslationID();
             int num = dodLanguages.LanguageNum;
             translationIDList.Items.Clear();
             cmbLanguages.Items.Clear();
@@ -79,7 +82,7 @@ namespace DoDTranslationTool
                     //Check last translation
                     int lastIndex = translationIDList.SelectedIndex - 1;
                     string lastSelectedID = translationIDList.Items[lastIndex].ToString();
-					var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+					var cachedTranslationText = dodLanguages.GetTranslatedLanguage(
 							lastSelectedID,
 							cmbLanguages.SelectedIndex
 						);
@@ -97,7 +100,7 @@ namespace DoDTranslationTool
                         editorChanges.EditorChangeList.Add(editorChange);
 					}
 
-					cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+					cachedTranslationText = dodLanguages.GetTranslatedLanguage(
 							translationIDList.SelectedItem.ToString(),
 							cmbLanguages.SelectedIndex
 						);
@@ -110,7 +113,7 @@ namespace DoDTranslationTool
         {
             if (translationIDList.SelectedIndex != -1 && cmbLanguages.SelectedIndex != -1)
             {
-                var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+                var cachedTranslationText = dodLanguages.GetTranslatedLanguage(
                         translationIDList.SelectedItem.ToString(),
                         cmbLanguages.SelectedIndex
                     );
@@ -209,7 +212,7 @@ namespace DoDTranslationTool
 
 		private void txtTranslation_TextChanged(object sender, EventArgs e)
 		{
-			var cachedTranslationText = dodLanguages.GetLocalizedLanguage(
+			var cachedTranslationText = dodLanguages.GetTranslatedLanguage(
 					translationIDList.SelectedItem.ToString(),
 					cmbLanguages.SelectedIndex
 				);
