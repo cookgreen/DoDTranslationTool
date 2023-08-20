@@ -1,5 +1,7 @@
-*.exe
 .vs/*
+obj/*
+
+*.exe
+*.exe.config
 *.pdb
 *.dll
-obj/*
